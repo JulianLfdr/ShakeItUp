@@ -1,10 +1,10 @@
 import { RouterModule, Routes } from "@angular/router";
-import { CocktailSearchComponent } from "./components/cocktail-search/cocktail-search.component";
 import { NgModule } from "@angular/core";
+import { HomeComponent } from "./components/home/home.component";
 
 export const routes: Routes = [
-    { path: '', component: CocktailSearchComponent },
-    { path: 'search', component: CocktailSearchComponent },
+    { path: '', component: HomeComponent },
+    { path: 'search', component: HomeComponent },
     // { path: 'not-found', component: NotFoundComponent }
     // { path: '**', redirectTo: '/not-found' }
 ]

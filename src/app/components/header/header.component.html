@@ -1,1 +1,18 @@
-<p>header works!</p>
+<header class="bg-primary text-white p-6">
+    <nav class="flex items-center">
+        <a routerLink="/" class="text-2xl flex items-center">
+            <ng-icon name="tablerGlassFull"></ng-icon> ShakeItUp
+        </a>
+        <ul class="flex ml-6">
+            <li>
+                <a routerLink="/search">Search</a>
+            </li>
+            <li class="ml-6">
+                <a routerLink="/favorites">Favorites</a>
+            </li>
+            <li class="ml-6">
+                <a routerLink="/preferences">Preferences</a>
+            </li>
+        </ul>
+    </nav>
+</header>
