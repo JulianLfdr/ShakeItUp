@@ -1,9 +1,35 @@
-<form class="inline-flex flex-col">
+<form class="inline-flex flex-col" (ngSubmit)="showAllResults()">
     <input class="p-2 rounded-xl"
-        placeholder="Search for a cocktail..."
-            type="text">
+           placeholder="Search for a cocktail..."
+           type="text"
+           name="search"
+           [(ngModel)]="searchTerm"
+           (input)="onInputChange()">
     <button class="border w-fit mx-auto mt-4 px-6 py-2 rounded-xl bg-primary text-white"
             type="submit">
         Search
     </button>
 </form>
+
+<div class="flex" *ngFor="let cocktail of cocktails$ | async">
+    <img class="max-h-20 max-w-20" [src]="cocktail.image" [alt]="cocktail.name + ' thumbnail'">
+    <div>
+        <h4 class="text-lg font-bold">
+            {{ cocktail.name }}
+        </h4>
+        <div>
+            {{ cocktail.category }}
+        </div>
+        <div class="flex items-center">
+            Alcoholic: 
+            <ng-icon name="tablerGlass" *ngIf="cocktail.isAlcoholic"></ng-icon> 
+            <ng-icon name="tablerGlassOff" *ngIf="!cocktail.isAlcoholic"></ng-icon>
+            {{ cocktail.isAlcoholic ? 'Yes' : 'No' }}
+        </div>
+        <ul class="flex">
+            <li *ngFor="let tag of cocktail.tags">
+                {{ tag }}
+            </li>
+        </ul>
+    </div>
+</div>
