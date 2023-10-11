@@ -1,20 +1,33 @@
- <div class="flex" *ngFor="let cocktail of cocktails$ | async">
-    <img class="max-h-20 max-w-20" [src]="cocktail.thumbnail" [alt]="cocktail.name + ' thumbnail'">
-    <div>
-        <h4 class="text-lg font-bold">
-            {{ cocktail.name }}
-        </h4>
-        <div>
-            {{ cocktail.category }}
+<div class="flex mb-4">
+    <a class="ml-auto border w-fit px-6 py-2 rounded-xl bg-primary text-white flex items-center"
+       routerLink="/search">
+        <ng-icon name="tablerCircleArrowLeftFilled" class="mr-1"></ng-icon> Back to search
+    </a>
+</div>
+<div class="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div class="bg-white p-4 rounded-lg shadow-md"
+         *ngFor="let cocktail of cocktails$ | async">
+        <div class="flex">
+            <img class="max-h-20 max-w-20 border rounded-lg"
+                 [src]="cocktail.thumbnail"
+                 [alt]="cocktail.name + ' thumbnail'">
+            <div class="ml-4">
+                <h4 class="text-lg font-bold">
+                    {{ cocktail.name }}
+                </h4>
+                <div>
+                    {{ cocktail.category }}
+                </div>
+                <div class="flex items-center">
+                    <ng-icon name="tablerGlass" class="mr-1" *ngIf="cocktail.isAlcoholic"></ng-icon> 
+                    <ng-icon name="tablerGlassOff" class="mr-1" *ngIf="!cocktail.isAlcoholic"></ng-icon>
+                    {{ cocktail.isAlcoholic ? 'Yes' : 'No' }}
+                </div>
+            </div>
         </div>
-        <div class="flex items-center">
-            Alcoholic: 
-            <ng-icon name="tablerGlass" *ngIf="cocktail.isAlcoholic"></ng-icon> 
-            <ng-icon name="tablerGlassOff" *ngIf="!cocktail.isAlcoholic"></ng-icon>
-            {{ cocktail.isAlcoholic ? 'Yes' : 'No' }}
-        </div>
-        <ul class="flex">
-            <li *ngFor="let tag of cocktail.tags">
+        <ul class="flex gap-1 pt-2 text-xs">
+            <li class="bg-gray-200 rounded-lg py-1 px-2"
+                *ngFor="let tag of cocktail.tags">
                 {{ tag }}
             </li>
         </ul>

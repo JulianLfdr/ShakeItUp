@@ -5,8 +5,8 @@
            name="search"
            [(ngModel)]="searchTerm"
            (input)="onInputChange()">
-    <button class="border w-fit mx-auto mt-4 px-6 py-2 rounded-xl bg-primary text-white"
+    <button class="border w-fit mx-auto mt-4 px-6 py-2 rounded-xl bg-primary text-white flex items-center"
             type="submit">
-        Search
+        <ng-icon name="tablerSearch" class="mr-1"></ng-icon> Search
     </button>
 </form>
