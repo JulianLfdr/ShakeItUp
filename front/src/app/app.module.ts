@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { CocktailListComponent } from './components/cocktail-list/cocktail-list.component';
 import { CocktailDetailsComponent } from './components/cocktail-details/cocktail-details.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { navigationFeatureKey, navigationReducer } from './store/reducers/navigation.reducer';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     FormsModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(cocktailFeatureKey, cocktailReducer),
+    StoreModule.forFeature(navigationFeatureKey, navigationReducer),
     EffectsModule.forRoot([CocktailEffects]),
     NgIconsModule.withIcons({ tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch })
   ],

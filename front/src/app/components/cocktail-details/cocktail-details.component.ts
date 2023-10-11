@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, Observable, map } from 'rxjs';
+import { EMPTY, Observable, map, take } from 'rxjs';
 import { Cocktail } from 'src/app/shared/models/Cocktail';
 import { loadCocktail } from 'src/app/store/actions/cocktail.actions';
 import { AppState } from 'src/app/store/app.state';
+import { selectNavigationHistory } from 'src/app/store/selectors/navigation.selectors';
 import { selectCocktails } from 'src/app/store/selectors/search.selectors';
 
 @Component({
@@ -15,6 +16,7 @@ import { selectCocktails } from 'src/app/store/selectors/search.selectors';
 export class CocktailDetailsComponent {
   id: number = 0;
   cocktail$: Observable<Cocktail> = EMPTY;
+  backUrl$: Observable<string> = EMPTY;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -43,5 +45,10 @@ export class CocktailDetailsComponent {
         );
       }
     });
+
+    this.backUrl$ = this.store.select(selectNavigationHistory).pipe(
+      take(1),
+      map(history => [...history].find(url => url.includes('cocktails')) ?? '/')
+    );
   }
 }

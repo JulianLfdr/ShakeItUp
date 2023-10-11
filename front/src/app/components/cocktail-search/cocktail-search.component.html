@@ -1,12 +1,14 @@
 <form class="inline-flex flex-col" (ngSubmit)="showAllResults()">
-    <input class="p-2 rounded-xl"
+    <input class="p-2 rounded-xl border-2 border-primary focus:outline-none"
            placeholder="Search for a cocktail..."
            type="text"
            name="search"
-           [(ngModel)]="searchTerm"
-           (input)="onInputChange()">
-    <button class="border w-fit mx-auto mt-4 px-6 py-2 rounded-xl bg-primary text-white flex items-center"
+           [(ngModel)]="searchTerm">
+    <button class="w-fit mx-auto mt-4 px-6 py-2 rounded-xl bg-primary text-white flex items-center shadow-lg hover:shadow-2xl"
             type="submit">
         <ng-icon name="tablerSearch" class="mr-1"></ng-icon> Search
     </button>
 </form>
+<ul *ngIf="searchHistory$ | async as history">
+    <li *ngFor="let searchTerm of history">{{ searchTerm }}</li>
+</ul>

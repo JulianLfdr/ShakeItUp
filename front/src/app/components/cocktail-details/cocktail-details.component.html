@@ -1,10 +1,11 @@
-<div class="flex mb-4">
+<div class="flex mb-4" *ngIf="backUrl$ | async as backUrl">
     <a class="ml-auto border w-fit px-6 py-2 rounded-xl bg-primary text-white flex items-center"
-       routerLink="/search">
-        <ng-icon name="tablerCircleArrowLeftFilled" class="mr-1"></ng-icon> Back to list
+       [routerLink]="backUrl">
+        <ng-icon name="tablerCircleArrowLeftFilled" class="mr-1"></ng-icon>
+        <span *ngIf="backUrl === '/'">Back to search</span>
+        <span *ngIf="backUrl !== '/'">Back to list</span>
     </a>
 </div>
-
 <div class="flex"
      *ngIf="cocktail$ | async as cocktail">
    <div class="flex">
@@ -31,7 +32,4 @@
            {{ tag }}
        </li>
    </ul>
-
-    {{ cocktail.id }}
-    {{ cocktail.name }}
 </div>
