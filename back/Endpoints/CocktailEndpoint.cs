@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ShakeItUp.Enums;
+using ShakeItUp.Exceptions;
 using ShakeItUp.Services;
 
 namespace ShakeItUp.Cocktails;
@@ -18,21 +19,54 @@ public static class CocktailsModule
         [FromQuery(Name = "term")] string searchTerm,
         [FromQuery(Name = "mode")] CocktailSearchMode searchMode = CocktailSearchMode.ByName)
     {
-        var cocktail = await cocktailService.SearchCocktail(searchTerm, searchMode);
-        return Results.Ok(cocktail);
+        try
+        {
+            var cocktail = await cocktailService.SearchCocktail(searchTerm, searchMode);
+            return Results.Ok(cocktail);
+        }
+        catch (NoCocktailFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
     }
 
     public static async Task<IResult> LoadCocktail(
         ICocktailService cocktailService,
         [FromQuery] int id)
     {
-        var cocktail = await cocktailService.LoadCocktail(id);
-        return Results.Ok(cocktail);
+        try
+        {
+            var cocktail = await cocktailService.LoadCocktail(id);
+            return Results.Ok(cocktail);
+        }
+        catch (CocktailNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
     }
 
     public static async Task<IResult> GetRandomCocktail(ICocktailService cocktailService)
     {
-        var cocktail = await cocktailService.GetRandomCocktail();
-        return Results.Ok(cocktail);
+        try
+        {
+            var cocktail = await cocktailService.GetRandomCocktail();
+            return Results.Ok(cocktail);
+        }
+        catch (NoCocktailFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
     }
 }
