@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using ShakeItUp.Enums;
 using ShakeItUp.Services;
 
@@ -12,7 +13,7 @@ public static class CocktailsModule
         // app.MapGet("api/search", SearchCocktail);
     }
 
-    public static async Task<IResult> SearchCocktail(string searchTerm, ICocktailService cocktailService)
+    public static async Task<IResult> SearchCocktail([FromQuery(Name = "term")] string searchTerm, ICocktailService cocktailService)
     {
         var cocktail = await cocktailService.SearchCocktail(searchTerm, CocktailSearchMode.ByName);
         return Results.Ok(cocktail);

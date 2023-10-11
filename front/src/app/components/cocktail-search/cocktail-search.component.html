@@ -12,7 +12,7 @@
 </form>
 
 <div class="flex" *ngFor="let cocktail of cocktails$ | async">
-    <img class="max-h-20 max-w-20" [src]="cocktail.image" [alt]="cocktail.name + ' thumbnail'">
+    <img class="max-h-20 max-w-20" [src]="cocktail.thumbnail" [alt]="cocktail.name + ' thumbnail'">
     <div>
         <h4 class="text-lg font-bold">
             {{ cocktail.name }}

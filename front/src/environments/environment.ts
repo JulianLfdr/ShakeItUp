@@ -1,4 +1,3 @@
 export const environment = {
-    cocktailApiUrl: 'http://thecocktaildb.com/api/json/v1',
-    cocktailApiKey: '1'
+    cocktailApiUrl: 'http://localhost:5138/api'
 }

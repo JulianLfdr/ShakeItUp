@@ -9,7 +9,7 @@ export class Cocktail {
         public isAlcoholic: boolean,
         public glass: string,
         public instructions: string,
-        public image: string,
+        public thumbnail: string,
         public ingredients: string[],
         public measure: string[]
     ) { } 
