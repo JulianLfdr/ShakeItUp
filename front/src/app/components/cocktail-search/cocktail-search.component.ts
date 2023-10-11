@@ -16,6 +16,6 @@ export class CocktailSearchComponent {
   }
   
   showAllResults() {  
-    this.router.navigate(['/cocktails', this.searchTerm])
+    this.router.navigate(['/cocktails', this.searchTerm]);
   }
 }

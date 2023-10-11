@@ -10,12 +10,23 @@ public static class CocktailsModule
     {
         app.MapGet("api/random", GetRandomCocktail);
         app.MapGet("api/search", SearchCocktail);
-        // app.MapGet("api/search", SearchCocktail);
+        app.MapGet("api/load", LoadCocktail);
     }
 
-    public static async Task<IResult> SearchCocktail([FromQuery(Name = "term")] string searchTerm, ICocktailService cocktailService)
+    public static async Task<IResult> SearchCocktail(
+        ICocktailService cocktailService,
+        [FromQuery(Name = "term")] string searchTerm,
+        [FromQuery(Name = "mode")] CocktailSearchMode searchMode = CocktailSearchMode.ByName)
     {
-        var cocktail = await cocktailService.SearchCocktail(searchTerm, CocktailSearchMode.ByName);
+        var cocktail = await cocktailService.SearchCocktail(searchTerm, searchMode);
+        return Results.Ok(cocktail);
+    }
+
+    public static async Task<IResult> LoadCocktail(
+        ICocktailService cocktailService,
+        [FromQuery] int id)
+    {
+        var cocktail = await cocktailService.LoadCocktail(id);
         return Results.Ok(cocktail);
     }
 

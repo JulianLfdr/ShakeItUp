@@ -18,4 +18,11 @@ export class CocktailService {
         }
         return of([]);
     }
+
+    loadCocktail(id: number): Observable<Cocktail> {
+        if (id > 0) {
+            return this.httpClient.get<Cocktail>(`${this.endpoint}/load?id=${id}`);
+        }
+        return of();
+    }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable } from 'rxjs';
 import { Cocktail } from 'src/app/shared/models/Cocktail';
@@ -18,6 +18,7 @@ export class CocktailListComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly store: Store<AppState>
   ) { }
 
@@ -30,5 +31,9 @@ export class CocktailListComponent implements OnInit {
         this.store.dispatch(searchCocktails({ searchTerm: name || '' }));
       }
     });
+  }
+
+  onSelectCocktail(id: number) {
+    this.router.navigate(['/cocktail', id]);
   }
 }

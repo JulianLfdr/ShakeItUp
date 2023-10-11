@@ -16,6 +16,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { CocktailEffects } from './store/effects/cocktail.effects';
 import { FormsModule } from '@angular/forms';
 import { CocktailListComponent } from './components/cocktail-list/cocktail-list.component';
+import { CocktailDetailsComponent } from './components/cocktail-details/cocktail-details.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
@@ -24,6 +25,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     CocktailSearchComponent,
     HeaderComponent,
     HomeComponent,
+    CocktailListComponent,
+    CocktailDetailsComponent,
     NotFoundComponent
   ],
   imports: [

@@ -28,7 +28,7 @@ public sealed class TheCocktailDBEndpoints
     public TheCocktailDBEndpoint<TheCocktailDBEndpointSearch> SearchCocktail { get; set; } = null!;
 
     [Required]
-    public TheCocktailDBEndpoint<TheCocktailDBEndpointGetDetails> GetDetails { get; set; } = null!;
+    public TheCocktailDBEndpoint<TheCocktailDBEndpointLookup> LookupCocktail { get; set; } = null!;
 }
 
 public class TheCocktailDBEndpoint
@@ -56,7 +56,7 @@ public sealed class TheCocktailDBEndpointSearch
     public string ByIngredientName { get; set; } = null!;
 }
 
-public sealed class TheCocktailDBEndpointGetDetails
+public sealed class TheCocktailDBEndpointLookup
 {
     [Required]
     public string CocktailById { get; set; } = null!;
