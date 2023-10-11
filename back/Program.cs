@@ -5,11 +5,6 @@ using ShakeItUp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ShakeItUpConfig config = new();
-// builder.Configuration.Bind(config);
-
-// builder.Services.Configure<ShakeItUpConfig>(builder.Configuration);
-
 builder.Services.AddOptions<TheCocktailDBConfig>()
     .BindConfiguration(TheCocktailDBConfig.SectionName)
     .ValidateDataAnnotations()
@@ -18,14 +13,14 @@ builder.Services.AddOptions<TheCocktailDBConfig>()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICocktailService, CocktailService>();
+builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddHttpClient<CocktailService>((serviceProvider, httpClient) =>
+// Register the service and add a typed http client
+builder.Services.AddHttpClient<ICocktailService, CocktailService>((serviceProvider, httpClient) =>
 {
     var config = serviceProvider.GetRequiredService<IOptions<TheCocktailDBConfig>>().Value;
-    httpClient.BaseAddress = new Uri("https://thecocktaildb.com");
+    httpClient.BaseAddress = config.BaseUrl;
 });
-
 
 var app = builder.Build();
 
