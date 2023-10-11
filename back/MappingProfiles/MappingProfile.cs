@@ -11,7 +11,7 @@ public class MappingProfile : Profile
         CreateMap<CocktailApiResponse, Cocktail>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => int.Parse(src.Id)))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => GetTags(src.Tags)))
-            .ForMember(dest => dest.Alcoholic, opt => opt.MapFrom(src => src.Alcoholic == "Alcoholic"))
+            .ForMember(dest => dest.IsAlcoholic, opt => opt.MapFrom(src => src.Alcoholic == "Alcoholic"))
             .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => new Uri(src.Thumbnail)))
             .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => GetIngredients(src)))
             .ForMember(dest => dest.Measures, opt => opt.MapFrom(src => GetMeasures(src)));

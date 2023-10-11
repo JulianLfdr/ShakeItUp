@@ -10,26 +10,3 @@
         Search
     </button>
 </form>
-
-<div class="flex" *ngFor="let cocktail of cocktails$ | async">
-    <img class="max-h-20 max-w-20" [src]="cocktail.thumbnail" [alt]="cocktail.name + ' thumbnail'">
-    <div>
-        <h4 class="text-lg font-bold">
-            {{ cocktail.name }}
-        </h4>
-        <div>
-            {{ cocktail.category }}
-        </div>
-        <div class="flex items-center">
-            Alcoholic: 
-            <ng-icon name="tablerGlass" *ngIf="cocktail.isAlcoholic"></ng-icon> 
-            <ng-icon name="tablerGlassOff" *ngIf="!cocktail.isAlcoholic"></ng-icon>
-            {{ cocktail.isAlcoholic ? 'Yes' : 'No' }}
-        </div>
-        <ul class="flex">
-            <li *ngFor="let tag of cocktail.tags">
-                {{ tag }}
-            </li>
-        </ul>
-    </div>
-</div>

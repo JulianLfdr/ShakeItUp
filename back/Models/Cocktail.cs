@@ -14,7 +14,7 @@ public class Cocktail
 
     public string? IBA { get; set; }
 
-    public required bool Alcoholic { get; set; }
+    public required bool IsAlcoholic { get; set; }
 
     public required string Glass { get; set; }
 

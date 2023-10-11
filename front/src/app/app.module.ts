@@ -15,13 +15,15 @@ import { cocktailFeatureKey, cocktailReducer } from './store/reducers/cocktail.r
 import { EffectsModule } from '@ngrx/effects';
 import { CocktailEffects } from './store/effects/cocktail.effects';
 import { FormsModule } from '@angular/forms';
+import { CocktailListComponent } from './components/cocktail-list/cocktail-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CocktailSearchComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    CocktailListComponent
   ],
   imports: [
     BrowserModule,
