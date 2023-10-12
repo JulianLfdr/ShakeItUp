@@ -34,3 +34,16 @@ export const loadCocktailSuccess = createAction(
 export const loadCocktailError = createAction(
     '[Cocktail] Load Cocktail Error'
 );
+
+/*
+ * Favorite
+ */ 
+export const addFavoriteCocktail = createAction(
+    '[Cocktail] Add Favorite Cocktail',
+    props<{ id: number }>()
+);
+
+export const removeFavoriteCocktail = createAction(
+    '[Cocktail] Remove Favorite Cocktail',
+    props<{ id: number }>()
+);

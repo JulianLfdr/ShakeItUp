@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgIconsModule } from '@ng-icons/core';
-import { tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch } from '@ng-icons/tabler-icons';
+import { tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch, tablerHeartFilled, tablerHeartBroken } from '@ng-icons/tabler-icons';
 
 import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
@@ -39,7 +39,7 @@ import { navigationFeatureKey, navigationReducer } from './store/reducers/naviga
     StoreModule.forFeature(cocktailFeatureKey, cocktailReducer),
     StoreModule.forFeature(navigationFeatureKey, navigationReducer),
     EffectsModule.forRoot([CocktailEffects]),
-    NgIconsModule.withIcons({ tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch })
+    NgIconsModule.withIcons({ tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch, tablerHeartFilled, tablerHeartBroken })
   ],
   providers: [],
   bootstrap: [AppComponent]

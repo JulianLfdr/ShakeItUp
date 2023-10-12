@@ -4,3 +4,5 @@ import { CocktailState, cocktailFeatureKey } from "../reducers/cocktail.reducer"
 export const cocktailFeature = createFeatureSelector<CocktailState>(cocktailFeatureKey)
 
 export const selectCocktails = createSelector(cocktailFeature, (state: CocktailState) => state.cocktails);
+
+export const selectFavoriteCocktails = createSelector(cocktailFeature, (state: CocktailState) => state.favorites);

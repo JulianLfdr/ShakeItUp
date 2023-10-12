@@ -3,10 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EMPTY, Observable, map, take } from 'rxjs';
 import { Cocktail } from 'src/app/shared/models/Cocktail';
-import { loadCocktail } from 'src/app/store/actions/cocktail.actions';
+import { addFavoriteCocktail, loadCocktail, removeFavoriteCocktail } from 'src/app/store/actions/cocktail.actions';
 import { AppState } from 'src/app/store/app.state';
 import { selectNavigationHistory } from 'src/app/store/selectors/navigation.selectors';
-import { selectCocktails } from 'src/app/store/selectors/search.selectors';
+import { selectCocktails, selectFavoriteCocktails } from 'src/app/store/selectors/cocktail.selectors';
 
 @Component({
   selector: 'app-cocktail-details',
@@ -15,6 +15,8 @@ import { selectCocktails } from 'src/app/store/selectors/search.selectors';
 })
 export class CocktailDetailsComponent {
   id: number = 0;
+  isFavorite: boolean = false;
+
   cocktail$: Observable<Cocktail> = EMPTY;
   backUrl$: Observable<string> = EMPTY;
 
@@ -50,5 +52,18 @@ export class CocktailDetailsComponent {
       take(1),
       map(history => [...history].find(url => url.includes('cocktails')) ?? '/')
     );
+
+    this.store.select(selectFavoriteCocktails).pipe(
+      map(favorites => favorites.find(favId => favId === this.id))
+    ).subscribe(id => this.isFavorite = id === this.id);
+  }
+
+  onFavorite() {
+    if (this.isFavorite) {
+      this.store.dispatch(removeFavoriteCocktail({ id: this.id }));
+    }
+    else {
+      this.store.dispatch(addFavoriteCocktail({ id: this.id }));
+    }
   }
 }

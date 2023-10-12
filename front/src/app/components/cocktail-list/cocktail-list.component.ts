@@ -5,7 +5,7 @@ import { EMPTY, Observable, map } from 'rxjs';
 import { Cocktail } from 'src/app/shared/models/Cocktail';
 import { searchCocktails } from 'src/app/store/actions/cocktail.actions';
 import { AppState } from 'src/app/store/app.state';
-import { selectCocktails } from 'src/app/store/selectors/search.selectors';
+import { selectCocktails } from 'src/app/store/selectors/cocktail.selectors';
 
 @Component({
   selector: 'app-cocktail-list',
