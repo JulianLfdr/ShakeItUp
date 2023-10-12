@@ -1,17 +1,15 @@
 import { createReducer, on } from "@ngrx/store";
 import { Cocktail } from "src/app/shared/models/Cocktail";
-import { addFavoriteCocktail, loadCocktailSuccess, removeFavoriteCocktail, searchCocktailsSuccess } from "../actions/cocktail.actions";
+import { loadCocktailSuccess, searchCocktailsSuccess } from "../actions/cocktail.actions";
 
 export const cocktailFeatureKey = 'cocktail';
 
 export interface CocktailState {
-    cocktails: Cocktail[],
-    favorites: number[]
+    cocktails: Cocktail[]
 }
 
 const initialState: CocktailState = {
-    cocktails: [],
-    favorites: [11000]
+    cocktails: []
 };
 
 export const cocktailReducer = createReducer(
@@ -23,15 +21,5 @@ export const cocktailReducer = createReducer(
     on(loadCocktailSuccess, (state, { cocktail }) => ({
         ...state,
         cocktails: [...state.cocktails, cocktail]
-    })),
-    on(addFavoriteCocktail, (state, { id }) => ({
-        ...state,
-        favorites: state.favorites.find(favId => favId === id)
-            ? [...state.favorites]
-            : [...state.favorites, id]
-    })),
-    on(removeFavoriteCocktail, (state, { id }) => ({
-        ...state,
-        favorites: [...state.favorites.filter(favId => favId !== id)]
     }))
 );

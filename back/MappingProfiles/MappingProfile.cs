@@ -25,7 +25,12 @@ public class MappingProfile : Profile
 
     private List<string> GetInstructions(string instructions)
     {
-        return instructions.Split('.').Where(i => !string.IsNullOrEmpty(i)).Select(i => i.Trim()).ToList();
+        return instructions
+            .Replace(".)", ").")
+            .Split('.')
+            .Where(i => !string.IsNullOrEmpty(i))
+            .Select(i => i.Trim())
+            .ToList();
     }
 
     private List<string> GetIngredients(CocktailApiResponse src)

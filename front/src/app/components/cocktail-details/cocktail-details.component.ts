@@ -1,24 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, Observable, map, take } from 'rxjs';
+import { EMPTY, Observable, Subject, map, takeUntil } from 'rxjs';
 import { Cocktail } from 'src/app/shared/models/Cocktail';
-import { addFavoriteCocktail, loadCocktail, removeFavoriteCocktail } from 'src/app/store/actions/cocktail.actions';
+import { loadCocktail } from 'src/app/store/actions/cocktail.actions';
 import { AppState } from 'src/app/store/app.state';
-import { selectNavigationHistory } from 'src/app/store/selectors/navigation.selectors';
-import { selectCocktails, selectFavoriteCocktails } from 'src/app/store/selectors/cocktail.selectors';
+import { selectSearchHistory } from 'src/app/store/selectors/navigation.selectors';
+import { selectCocktailById } from 'src/app/store/selectors/cocktail.selectors';
+import { isCocktailInFavorites } from 'src/app/store/selectors/favorite.selectors';
+import { addFavoriteCocktail, removeFavoriteCocktail } from 'src/app/store/actions/favorite.actions';
 
 @Component({
   selector: 'app-cocktail-details',
   templateUrl: './cocktail-details.component.html',
   styleUrls: ['./cocktail-details.component.scss']
 })
-export class CocktailDetailsComponent {
-  id: number = 0;
+export class CocktailDetailsComponent implements OnInit, OnDestroy {
+
   isFavorite: boolean = false;
 
-  cocktail$: Observable<Cocktail> = EMPTY;
+  cocktail$: Observable<Cocktail | undefined> = EMPTY;
   backUrl$: Observable<string> = EMPTY;
+  unsubscribe$: Subject<boolean> = new Subject();
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -26,44 +29,34 @@ export class CocktailDetailsComponent {
   ) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.id = +id;
+    const cocktailId = +this.route.snapshot.paramMap.get('id')!;
 
-        // Check if the cocktail is already in the store
-        this.store.select(selectCocktails).pipe(
-          map(cocktails => cocktails.find(cocktail => cocktail.id === this.id))
-        ).subscribe(existingCocktail => {
-          if (!existingCocktail) {
-            // If the cocktail is not in the store, dispatch the action to load it
-            this.store.dispatch(loadCocktail({ id: this.id }));
-          }
-        });
+    this.cocktail$ = this.store.select(selectCocktailById(cocktailId));
 
-        // Select the cocktail from the store
-        this.cocktail$ = this.store.select(selectCocktails).pipe(
-          map(cocktails => cocktails.filter(cocktail => cocktail.id === this.id)[0])
-        );
-      }
-    });
+    this.store.select(isCocktailInFavorites(cocktailId))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(isInFavorites => {
+        this.isFavorite = isInFavorites;
+      });
 
-    this.backUrl$ = this.store.select(selectNavigationHistory).pipe(
-      take(1),
-      map(history => [...history].find(url => url.includes('cocktails')) ?? '/')
+    this.store.dispatch(loadCocktail({ id: cocktailId }));
+
+    this.backUrl$ = this.store.select(selectSearchHistory).pipe(
+      map(history => history.length > 0 ? `/cocktails/${history.shift()}` : '/')
     );
-
-    this.store.select(selectFavoriteCocktails).pipe(
-      map(favorites => favorites.find(favId => favId === this.id))
-    ).subscribe(id => this.isFavorite = id === this.id);
   }
 
-  onFavorite() {
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(false);
+    this.unsubscribe$.complete();
+  }
+
+  onToggleFavorite(cocktailId: number) {
     if (this.isFavorite) {
-      this.store.dispatch(removeFavoriteCocktail({ id: this.id }));
+      this.store.dispatch(removeFavoriteCocktail({ id: cocktailId }));
     }
     else {
-      this.store.dispatch(addFavoriteCocktail({ id: this.id }));
+      this.store.dispatch(addFavoriteCocktail({ id: cocktailId }));
     }
   }
 }

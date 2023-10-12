@@ -25,4 +25,11 @@ export class CocktailService {
         }
         return of();
     }
+
+    loadCocktails(ids: number[]): Observable<Cocktail[]> {
+        if (ids.length > 0) {
+            return this.httpClient.get<Cocktail[]>(`${this.endpoint}/load-many?ids=${ids}`);
+        }
+        return of();
+    }    
 }

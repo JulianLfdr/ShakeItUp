@@ -1,8 +1,7 @@
 <div class="" *ngIf="backUrl$ | async as backUrl">
-    <a class="ml-auto border w-fit px-6 py-2 rounded-xl bg-primary text-white flex items-center" [routerLink]="backUrl">
+    <a class="ml-auto w-fit px-6 py-2 rounded-xl bg-primary text-white flex items-center" [routerLink]="backUrl">
         <ng-icon name="tablerCircleArrowLeftFilled" class="mr-1"></ng-icon>
-        <span *ngIf="backUrl === '/'">Back to search</span>
-        <span *ngIf="backUrl !== '/'">Back to list</span>
+        Back to {{ backUrl === '/' ? 'search' : 'list' }}
     </a>
 </div>
 <div class="flex flex-col mt-4" *ngIf="cocktail$ | async as cocktail">
@@ -21,11 +20,9 @@
             <img class="max-h-60 max-w-60 border rounded-lg" [src]="cocktail.thumbnail" [alt]="cocktail.name + ' thumbnail'">
             <button class="mt-2 px-6 py-2 rounded-xl bg-primary text-white flex items-center"
                     type="button"
-                    (click)="onFavorite()">
-                <ng-icon *ngIf="!isFavorite" name="tablerHeartFilled" class="mr-1"></ng-icon>
-                <span *ngIf="!isFavorite">Add to Favorites</span>
-                <ng-icon *ngIf="isFavorite" name="tablerHeartBroken" class="mr-1"></ng-icon>
-                <span *ngIf="isFavorite">Remove from Favorites</span>
+                    (click)="onToggleFavorite(cocktail.id)">
+                <ng-icon [name]="isFavorite ? 'tablerHeartBroken' : 'tablerHeartFilled'" class="mr-1"></ng-icon>
+                {{ isFavorite ? 'Remove from' : 'Add to' }} Favorites
             </button>
             <div class="mt-2">
                 Category:
@@ -47,7 +44,7 @@
         <div class="flex flex-col md:w-2/3 max-md:text-center gap-4">
             <div class="h-1/2">
                 <h4 class="text-xl font-bold">Ingredients</h4>
-                <ul class="list-disc list-inside">
+                <ul class="list-disc list-inside md:grid md:grid-flow-col md:grid-rows-6 gap-x-2 w-fit">
                     <li *ngFor="let ingredient of cocktail.ingredients; let i = index;">
                         {{ ingredient }}
                         <span *ngIf="cocktail.measures[i] as measure">

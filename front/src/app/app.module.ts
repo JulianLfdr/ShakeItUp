@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -19,6 +19,10 @@ import { CocktailListComponent } from './components/cocktail-list/cocktail-list.
 import { CocktailDetailsComponent } from './components/cocktail-details/cocktail-details.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { navigationFeatureKey, navigationReducer } from './store/reducers/navigation.reducer';
+import { FavoriteListComponent } from './components/favorite-list/favorite-list.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { CocktailSearchHistoryComponent } from './components/cocktail-search-history/cocktail-search-history.component';
+import { favoriteFeatureKey, favoriteReducer } from './store/reducers/favorite.reducer';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import { navigationFeatureKey, navigationReducer } from './store/reducers/naviga
     HomeComponent,
     CocktailListComponent,
     CocktailDetailsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    FavoriteListComponent,
+    CocktailSearchHistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +43,11 @@ import { navigationFeatureKey, navigationReducer } from './store/reducers/naviga
     FormsModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature(cocktailFeatureKey, cocktailReducer),
+    StoreModule.forFeature(favoriteFeatureKey, favoriteReducer),
     StoreModule.forFeature(navigationFeatureKey, navigationReducer),
     EffectsModule.forRoot([CocktailEffects]),
-    NgIconsModule.withIcons({ tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch, tablerHeartFilled, tablerHeartBroken })
+    NgIconsModule.withIcons({ tablerGlassFull, tablerGlass, tablerGlassOff, tablerCircleArrowLeftFilled, tablerSearch, tablerHeartFilled, tablerHeartBroken }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [],
   bootstrap: [AppComponent]
