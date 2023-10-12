@@ -8,3 +8,12 @@ export const selectNavigationHistory = createSelector(navigationFeature, (state:
 export const selectNavigationPrevious = createSelector(navigationFeature, (state: NavigationState) => state.previousRoute);
 
 export const selectNavigationCurrent = createSelector(navigationFeature, (state: NavigationState) => state.currentRoute);
+
+export const selectSearchHistory = createSelector(navigationFeature, (state: NavigationState) => { 
+    const history = state.history
+        .filter(url => url.includes('cocktails'))
+        .map(url => url.replace('/cocktails/', ''))
+
+    // Distinct and take last 10
+    return [...new Set(history)].slice(-10);
+});

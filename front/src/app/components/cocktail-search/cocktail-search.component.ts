@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, Observable, distinct, last, map, take, takeLast } from 'rxjs';
+import { EMPTY, Observable, map, take } from 'rxjs';
 import { AppState } from 'src/app/store/app.state';
-import { selectNavigationHistory } from 'src/app/store/selectors/navigation.selectors';
+import { selectSearchHistory } from 'src/app/store/selectors/navigation.selectors';
 
 @Component({
   selector: 'app-cocktail-search',
@@ -22,15 +22,7 @@ export class CocktailSearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.searchHistory$ = this.store.select(selectNavigationHistory).pipe(
-      take(1),
-      distinct(),
-      takeLast(10),
-      map(history => {
-        return history.filter(url => url.includes('cocktails'))
-          .map(url => url.replace('/cocktails/', ''))
-      }),
-    );
+    this.searchHistory$ = this.store.select(selectSearchHistory);
   }
 
   showAllResults() {  

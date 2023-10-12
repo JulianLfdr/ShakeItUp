@@ -9,6 +9,16 @@
         <ng-icon name="tablerSearch" class="mr-1"></ng-icon> Search
     </button>
 </form>
-<ul *ngIf="searchHistory$ | async as history">
-    <li *ngFor="let searchTerm of history">{{ searchTerm }}</li>
-</ul>
+<div class="text-center pt-4"
+     *ngIf="searchHistory$ | async as searchHistory">
+    <h4 class="text-lg font-semibold"
+        *ngIf="searchHistory.length > 0">Search History</h4>
+    <ul class="flex gap-3 justify-center flex-wrap"
+        *ngIf="searchHistory.length > 0">
+        <li class="bg-gray-200 rounded-lg py-1 px-2 cursor-pointer shadow-sm hover:shadow-md"
+            *ngFor="let searchTerm of searchHistory"
+            [routerLink]="['/cocktails/', searchTerm]">
+            {{ searchTerm }}
+        </li>
+    </ul>
+</div>
