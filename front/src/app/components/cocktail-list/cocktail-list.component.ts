@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, map } from 'rxjs';
 import { Cocktail } from 'src/app/shared/models/Cocktail';
 import { searchCocktails } from 'src/app/store/actions/cocktail.actions';
 import { AppState } from 'src/app/store/app.state';
@@ -23,7 +23,14 @@ export class CocktailListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cocktails$ = this.store.select(selectCocktails);
+    this.cocktails$ = this.store.select(selectCocktails).pipe(
+      map(cocktails => cocktails.map(cocktail => ({
+        ...cocktail,
+        tags: cocktail.tags.length > 3
+            ? [...cocktail.tags.slice(0, 3), `${cocktail.tags.slice(3).length}+`]
+            : [...cocktail.tags]
+      } as Cocktail)))
+    );
 
     this.route.paramMap.subscribe((params) => {
       const name = params.get('name');
