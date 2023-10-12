@@ -1,29 +1,19 @@
 import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
-import { HomeComponent } from "./components/home/home.component";
-import { CocktailListComponent } from "./components/cocktail-list/cocktail-list.component";
-import { CocktailDetailsComponent } from "./components/cocktail-details/cocktail-details.component";
-import { NotFoundComponent } from "./components/not-found/not-found.component";
-import { FavoriteListComponent } from "./components/favorite-list/favorite-list.component";
+import { NotFoundComponent } from "./core/components/not-found/not-found.component";
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent },
-    { path: 'search', component: HomeComponent },
-    { path: 'cocktails/:name', component: CocktailListComponent },
-    { path: 'cocktail/:id', component: CocktailDetailsComponent },
-    { path: 'favorites', component: FavoriteListComponent },
+    { path: 'cocktails', loadChildren: () => import('./features/cocktails/cocktails.module').then((m) => m.CocktailsModule) },
+    { path: 'favorites', loadChildren: () => import('./features/favorites/favorites.module').then((m) => m.FavoritesModule) },
+    { path: 'home', loadChildren: () => import('./features/home/home.module').then((m) => m.HomeModule) },
     { path: 'not-found', component: NotFoundComponent },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: '**', redirectTo: '/not-found' }
 ]
 
 @NgModule({
-    exports: [
-        RouterModule
-    ],
-    imports: [
-        RouterModule.forRoot(routes)
-    ]
+    declarations: [],
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
 })
-export class AppRoutingModule {
-
-}
+export class AppRoutingModule { }
