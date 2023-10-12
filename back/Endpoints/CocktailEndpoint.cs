@@ -9,9 +9,10 @@ public static class CocktailsModule
 {
     public static void MapCocktailEndpoints(this WebApplication app)
     {
-        app.MapGet("api/random", GetRandomCocktail);
-        app.MapGet("api/search", SearchCocktail);
-        app.MapGet("api/load", LoadCocktail);
+        app.MapGet("api/cocktails/random", GetRandomCocktail);
+        app.MapGet("api/cocktails/search", SearchCocktail);
+        app.MapGet("api/cocktails/load", LoadCocktail);
+        app.MapGet("api/cocktails/load-many", LoadMultipleCocktails);
     }
 
     public static async Task<IResult> SearchCocktail(
@@ -42,6 +43,25 @@ public static class CocktailsModule
         {
             var cocktail = await cocktailService.LoadCocktail(id);
             return Results.Ok(cocktail);
+        }
+        catch (CocktailNotFoundException ex)
+        {
+            return Results.NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    public static async Task<IResult> LoadMultipleCocktails(
+        ICocktailService cocktailService,
+        [FromQuery] int[] ids)
+    {
+        try
+        {
+            var cocktails = await cocktailService.LoadCocktails(ids.ToList());
+            return Results.Ok(cocktails);
         }
         catch (CocktailNotFoundException ex)
         {

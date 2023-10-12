@@ -5,6 +5,7 @@ using ShakeItUp.Configurations;
 using ShakeItUp.Enums;
 using ShakeItUp.Exceptions;
 using ShakeItUp.Models;
+using ShakeItUp.Models.ApiResponse;
 using ShakeItUp.ShakeItUp.Models.ApiResponse;
 
 namespace ShakeItUp.Services;
@@ -47,11 +48,12 @@ public sealed class CocktailService : ICocktailService
         {
             throw new NoCocktailFoundException();
         }
-        
+
         return _mapper.Map<List<Cocktail>>(drinks.Cocktails);
     }
 
-    public async Task<Cocktail> LoadCocktail(int id) {
+    public async Task<Cocktail> LoadCocktail(int id)
+    {
         string url = $"{_apiPath}/{_config.Endpoints.LookupCocktail.Path}?{_config.Endpoints.LookupCocktail.Parameters.CocktailById}={id}";
 
         var response = await _httpClient.GetAsync(url);
@@ -66,8 +68,34 @@ public sealed class CocktailService : ICocktailService
         {
             throw new CocktailNotFoundException(id);
         }
-        
+
         return _mapper.Map<Cocktail>(drinks.Cocktails.First());
+    }
+
+    public async Task<List<Cocktail>> LoadCocktails(List<int> ids)
+    {
+        List<CocktailApiResponse> cocktails = new();
+        foreach (var id in ids)
+        {
+            string url = $"{_apiPath}/{_config.Endpoints.LookupCocktail.Path}?{_config.Endpoints.LookupCocktail.Parameters.CocktailById}={id}";
+
+            var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"{nameof(LoadCocktail)} - Error while querying TheCocktailDB.\nStatus code <{response.StatusCode}>.\n{_httpClient.BaseAddress + url}\n");
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var drinks = JsonSerializer.Deserialize<DrinkApiResponse>(jsonResponse);
+            if (drinks?.Cocktails == null || !drinks.Cocktails.Any())
+            {
+                throw new CocktailNotFoundException(id);
+            }
+
+            cocktails.Add(drinks.Cocktails.First());
+        }
+
+        return _mapper.Map<List<Cocktail>>(cocktails);
     }
 
     public async Task<Cocktail> GetRandomCocktail()
