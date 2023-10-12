@@ -18,7 +18,7 @@ public class Cocktail
 
     public required string Glass { get; set; }
 
-    public required string Instructions { get; set; }
+    public required List<string> Instructions { get; set; }
 
     public required Uri Thumbnail { get; set; }
 

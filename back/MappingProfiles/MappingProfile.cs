@@ -12,14 +12,20 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => int.Parse(src.Id)))
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => GetTags(src.Tags)))
             .ForMember(dest => dest.IsAlcoholic, opt => opt.MapFrom(src => src.Alcoholic == "Alcoholic"))
+            .ForMember(dest => dest.Instructions, opt => opt.MapFrom(src => GetInstructions(src.Instructions)))
             .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => new Uri(src.Thumbnail)))
             .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(src => GetIngredients(src)))
             .ForMember(dest => dest.Measures, opt => opt.MapFrom(src => GetMeasures(src)));
     }
 
-    private List<string> GetTags(string tags)
+    private List<string> GetTags(string? tags)
     {
         return tags?.Split(',').ToList() ?? new();
+    }
+
+    private List<string> GetInstructions(string instructions)
+    {
+        return instructions.Split('.').Where(i => !string.IsNullOrEmpty(i)).Select(i => i.Trim()).ToList();
     }
 
     private List<string> GetIngredients(CocktailApiResponse src)
@@ -30,7 +36,7 @@ public class MappingProfile : Profile
             string? ingredientValue = src.GetType().GetProperty($"Ingredient{i}")?.GetValue(src) as string;
             if (!string.IsNullOrEmpty(ingredientValue))
             {
-                ingredients.Add(ingredientValue);
+                ingredients.Add(ingredientValue.Trim());
             }
         }
         return ingredients;
@@ -44,7 +50,7 @@ public class MappingProfile : Profile
             string? measureValue = src.GetType().GetProperty($"Measure{i}")?.GetValue(src) as string;
             if (!string.IsNullOrEmpty(measureValue))
             {
-                measures.Add(measureValue);
+                measures.Add(measureValue.Trim());
             }
         }
         return measures;

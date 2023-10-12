@@ -1,35 +1,61 @@
-<div class="flex mb-4" *ngIf="backUrl$ | async as backUrl">
-    <a class="ml-auto border w-fit px-6 py-2 rounded-xl bg-primary text-white flex items-center"
-       [routerLink]="backUrl">
+<div class="" *ngIf="backUrl$ | async as backUrl">
+    <a class="ml-auto border w-fit px-6 py-2 rounded-xl bg-primary text-white flex items-center" [routerLink]="backUrl">
         <ng-icon name="tablerCircleArrowLeftFilled" class="mr-1"></ng-icon>
         <span *ngIf="backUrl === '/'">Back to search</span>
         <span *ngIf="backUrl !== '/'">Back to list</span>
     </a>
 </div>
-<div class="flex"
-     *ngIf="cocktail$ | async as cocktail">
-   <div class="flex">
-       <img class="max-h-60 max-w-60 border rounded-lg"
-            [src]="cocktail.thumbnail"
-            [alt]="cocktail.name + ' thumbnail'">
-       <div class="ml-4">
-           <h4 class="text-lg font-bold">
-               {{ cocktail.name }}
-           </h4>
-           <div>
-               {{ cocktail.category }}
-           </div>
-           <div class="flex items-center">
-               <ng-icon name="tablerGlass" class="mr-1" *ngIf="cocktail.isAlcoholic"></ng-icon> 
-               <ng-icon name="tablerGlassOff" class="mr-1" *ngIf="!cocktail.isAlcoholic"></ng-icon>
-               {{ cocktail.isAlcoholic ? 'Yes' : 'No' }}
-           </div>
-       </div>
-   </div>
-   <ul class="flex gap-1 pt-2 text-xs">
-       <li class="bg-gray-200 rounded-lg py-1 px-2"
-           *ngFor="let tag of cocktail.tags">
-           {{ tag }}
-       </li>
-   </ul>
+<div class="flex flex-col mt-4" *ngIf="cocktail$ | async as cocktail">
+    <div class="flex flex-col items-center">
+        <h1 class="text-4xl font-bold">
+            {{ cocktail.name }}
+        </h1>
+        <ul class="flex gap-1 pt-2 text-xs flex-wrap sm:w-4/6 md:w-2/6 justify-center">
+            <li class="bg-gray-200 rounded-lg py-1 px-2" *ngFor="let tag of cocktail.tags">
+                {{ tag }}
+            </li>
+        </ul>
+    </div>
+    <div class="flex mt-8 max-md:flex-col max-md:items-center gap-4">
+        <div class="md:w-1/3 max-md:text-center">
+            <img class="max-h-60 max-w-60 border rounded-lg" [src]="cocktail.thumbnail" [alt]="cocktail.name + ' thumbnail'">
+            <div class="pt-2">
+                Category:
+                <span class="bg-gray-200 rounded-lg py-1 px-2">{{ cocktail.category }}</span>
+            </div>
+            <div class="pt-2">
+                Glass:
+                <span class="bg-gray-200 rounded-lg py-1 px-2">{{ cocktail.glass }}</span>
+            </div>
+            <div class="pt-2">
+                Alcoholic:
+                <span class="bg-gray-200 rounded-lg py-1 px-2 inline-flex items-center">
+                    <ng-icon name="tablerGlass" class="mr-1" *ngIf="cocktail.isAlcoholic"></ng-icon>
+                    <ng-icon name="tablerGlassOff" class="mr-1" *ngIf="!cocktail.isAlcoholic"></ng-icon>
+                    {{ cocktail.isAlcoholic ? 'Yes' : 'No' }}
+                </span>
+            </div>
+        </div>
+        <div class="flex flex-col md:w-2/3 max-md:text-center gap-4">
+            <div class="h-1/2">
+                <h4 class="text-xl font-bold">Ingredients</h4>
+                <ul class="list-disc list-inside">
+                    <li *ngFor="let ingredient of cocktail.ingredients; let i = index;">
+                        {{ ingredient }}
+                        <span *ngIf="cocktail.measures[i] as measure">
+                            ({{ measure }})
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="h-1/2">
+                <h4 class="text-xl font-bold">Instructions</h4>
+                <ul class="list-decimal list-inside">
+                    <li *ngFor="let instructions of cocktail.instructions">
+                        {{ instructions }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
