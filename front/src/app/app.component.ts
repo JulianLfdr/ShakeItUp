@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { navigateTo } from './store/actions/navigation.actions';
 import { Store } from '@ngrx/store';
-import { AppState } from './store/app.state';
+import { AppState } from './core/store/app.state';
+import { navigateTo } from './core/store/actions/router.actions';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
 

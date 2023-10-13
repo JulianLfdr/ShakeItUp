@@ -1,0 +1,31 @@
+<div class="flex flex-col w-full h-full justify-center">
+  <div class="text-center">
+    <h1 class="text-5xl font-bold flex items-center justify-center">
+      <ng-icon name="tablerGlassFull" class="mr-1"></ng-icon> ShakeItUp
+    </h1>
+    <p class="mt-3 text-lg">
+      Discover, mix, and enjoy!
+    </p>
+  </div>
+
+  <div class="my-6 mx-auto text-lg">
+    <form class="inline-flex flex-col" (ngSubmit)="showAllResults()">
+      <input class="p-2 rounded-xl border-2 border-primary focus:outline-none" placeholder="Search for a cocktail..."
+        type="text" name="search" [(ngModel)]="searchTerm">
+      <button
+        class="w-fit mx-auto mt-4 px-6 py-2 rounded-xl bg-primary text-white flex items-center shadow-lg hover:shadow-2xl"
+        type="submit">
+        <ng-icon name="tablerSearch" class="mr-1"></ng-icon> Search
+      </button>
+    </form>
+    <div class="text-center pt-4" *ngIf="searchHistory$ | async as searchHistory">
+      <h4 class="text-lg font-semibold" *ngIf="searchHistory.length > 0">Search History</h4>
+      <ul class="flex gap-3 justify-center flex-wrap" *ngIf="searchHistory.length > 0">
+        <li class="bg-gray-200 rounded-lg py-1 px-2 cursor-pointer shadow-sm hover:shadow-md"
+          *ngFor="let searchTerm of searchHistory" [routerLink]="['/cocktails/', searchTerm]">
+          {{ searchTerm }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
